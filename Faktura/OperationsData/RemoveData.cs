@@ -32,6 +32,7 @@ namespace Faktura.OperationsData
             }
 
         }
+
         public static void RemoveMaterials(FactureDbContext contextBase,string name)
         {
             var materialName = contextBase.Materialy.Where(p => p.Name==name).FirstOrDefault();
@@ -55,15 +56,16 @@ namespace Faktura.OperationsData
 
             
         }
+
         public static void RemoveCustomer(FactureDbContext contextBase, string name,string surname)
         {
-            var cusotmerName = contextBase.Customers.Where(p => p.Name == name).FirstOrDefault();
+            var customerName = contextBase.Customers.Where(p => p.Name == name).FirstOrDefault();
             var customerSurname = contextBase.Customers.Where(s => s.Surname == surname).FirstOrDefault();
             try
             { 
-                if(cusotmerName is Customers || customerSurname is Customers)
+                if(customerName is Customer || customerSurname is Customer)
                 {
-                    contextBase.Remove(cusotmerName);
+                    contextBase.Remove(customerName);
                     contextBase.SaveChanges();
                 }
             }

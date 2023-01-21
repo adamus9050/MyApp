@@ -11,7 +11,7 @@ namespace Faktura.Models
         public int Id { get; set; }
 
         public Materials IdMaterial { get; set; } = null!; 
-        public Customers IdCustomer { get; set; } = null!;
+        public Customer IdCustomer { get; set; } = null!;
         public Kolnierz IdKolnierz { get; set; } = null!;
 
     }

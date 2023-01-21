@@ -10,7 +10,6 @@ namespace Faktura.Models
 {
     public abstract class MainModelClass
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]

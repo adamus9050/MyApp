@@ -33,7 +33,7 @@ namespace Faktura.OperationsData
                 string city = Console.ReadLine();
 
                 AdressesCustomers adresses = new AdressesCustomers(street, streetNumb, post, city);
-                Customers cust = new Customers(name, surname, phone);
+                Customer cust = new Customer(name, surname, phone);
                 cust.Adressess= adresses;
 
                 Console.WriteLine("Chcesz powtórzyć operację? n/y");

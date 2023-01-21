@@ -8,23 +8,22 @@ using System.Threading.Tasks;
 
 namespace Faktura.Models
 {
-    public class Customers : MainModelClass
+    public class Customer : MainModelClass
     {
         [Required]
-        public string Surname { get; set; } = null!;
+        public string Surname { get; set; }
         [Column("PhoneNumber", TypeName = "ntext")]
         [MaxLength(8)]
         public string PhoneNumber { get; set; }
-        public int IdAdress { get; set; }
+        public int AdressId { get; set; }
         public AdressesCustomers Adressess { get; set; } = null!;
         
 
-        public Customers(string name, string surname,string phoneNumber) : base(name)
+        public Customer(string name, string surname,string phoneNumber) : base(name)
         {
             Name = name;
             Surname = surname;
             PhoneNumber = phoneNumber;
-
         }
 
     }

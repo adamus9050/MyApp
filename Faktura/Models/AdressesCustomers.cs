@@ -11,18 +11,18 @@ namespace Faktura.Models
 {
     public class AdressesCustomers
     {
-        [Key]
         public int Id { get; set; }
         [Required]
-        public string Street { get; set; } = null!;
+        public string Street { get; set; }
         [Required]
-        public string StreetNumber { get; set; } = null!;
+        public string StreetNumber { get; set; }
         [Required]
         [Column("PhoneNumber", TypeName = "ntext")]
         [MaxLength(5)]
         public string PostCode { get; set; }
         [Required]
-        public string City { get; set; } = null!;
+        public string City { get; set; }
+        public Customer Customer { get; set; }
 
         public AdressesCustomers(string street,string streetNumber,string postCode,string city)
         {
