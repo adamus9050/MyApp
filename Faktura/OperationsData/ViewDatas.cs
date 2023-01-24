@@ -10,20 +10,50 @@ namespace Faktura.OperationsData
 {
     public class ViewDatas
     {
-        public static void VievCustomers (FactureDbContext contextBase)
+        public static void VievCustomers(FactureDbContext contextBase)
         {
             var customers = from customer in contextBase.Customers select customer;
+            var adress = from adrress in contextBase.Adress select adrress;
+            //customers = (IQueryable<Customer>)adress;
+
+            int idCust;
+            int idAdress;
 
             foreach (Customer custom in customers)
             {
-                //Console.WriteLine($"Id: {custom.Id}");
-                Console.WriteLine($"Name: {custom.Name} ");
-                Console.WriteLine($"Surname: {custom.Surname}");
-                Console.WriteLine($"Phone number: {custom.PhoneNumber}");
-                Console.WriteLine($"Adress: {custom.Adressess}");
+                idCust = custom.Id;
+                AddData.PrintMessage(ConsoleColor.Green, ConsoleColor.Black, $"Id:{custom.Id}");
+                AddData.PrintMessage(ConsoleColor.Green, ConsoleColor.Black, $"Name:{custom.Name}");
+                AddData.PrintMessage(ConsoleColor.Green, ConsoleColor.Black, $"Surname:{custom.Surname}");
+                AddData.PrintMessage(ConsoleColor.Green, ConsoleColor.Black, $"PhoneNumber:{custom.PhoneNumber}");
 
+                foreach (AdressesCustomers adrescust in adress)
+                {
+                    
+                    AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"Id:{adrescust.Id}");
+                    AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"Street:{adrescust.Street}");
+                    AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"City:{adrescust.City}");
+                    AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"PostCode:{adrescust.PostCode}");
+                }
             }
+
         }
-        
+        //public static void VievAdress(FactureDbContext contextBase, int Idcust)
+        //{
+        //    //var adress = from adrress in contextBase.Adress select adrress;
+        //    var adress = contextBase.Adress.Where(e => e.Id == Idcust).FirstOrDefault();
+
+        //    foreach (AdressesCustomers adrescust in adress)
+        //    {
+
+        //        AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"Id:{adrescust.Id}");
+        //        AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"Street:{adrescust.Street}");
+        //        AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"City:{adrescust.City}");
+        //        AddData.PrintMessage(ConsoleColor.White, ConsoleColor.Black, $"PostCode:{adrescust.PostCode}");
+        //    }
+
+        //}
     }
+        
+
 }

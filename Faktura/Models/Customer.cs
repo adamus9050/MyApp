@@ -12,8 +12,6 @@ namespace Faktura.Models
     {
         [Required]
         public string Surname { get; set; }
-        [Column("PhoneNumber", TypeName = "ntext")]
-        [MaxLength(8)]
         public string PhoneNumber { get; set; }
         public int AdressId { get; set; }
         public AdressesCustomers Adressess { get; set; } = null!;

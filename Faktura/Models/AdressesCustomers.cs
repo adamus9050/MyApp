@@ -17,8 +17,6 @@ namespace Faktura.Models
         [Required]
         public string StreetNumber { get; set; }
         [Required]
-        [Column("PhoneNumber", TypeName = "ntext")]
-        [MaxLength(5)]
         public string PostCode { get; set; }
         [Required]
         public string City { get; set; }

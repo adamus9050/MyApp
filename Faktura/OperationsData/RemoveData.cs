@@ -10,30 +10,31 @@ namespace Faktura.OperationsData
 {
     class RemoveData
     {
-        public static void RemoveKolnierz(FactureDbContext contextBase,string name,double price)
+
+        private static void RemoveKolnierz(FactureDbContext contextBase,string name,double price)
         {
             var kolnierzName = contextBase.Kolnierze.Where(p => p.Name==name).FirstOrDefault();
-
-            try
+            if (kolnierzName is Kolnierz) 
             {
-                if (kolnierzName is Kolnierz) 
-                {
-                    contextBase.Remove(kolnierzName);
-                    contextBase.SaveChanges();
-                }
+               contextBase.Remove(kolnierzName);
+                    
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("nie ma takiego rekordu.Exception");
-            }
-            finally
+            else 
             {
                 Console.WriteLine("nie ma takiego rekordu");
+            }
+            try
+            {
+                contextBase.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Coś poszło nie tak.Exception");
             }
 
         }
 
-        public static void RemoveMaterials(FactureDbContext contextBase,string name)
+        private static void RemoveMaterials(FactureDbContext contextBase,string name)
         {
             var materialName = contextBase.Materialy.Where(p => p.Name==name).FirstOrDefault();
             try
@@ -57,25 +58,50 @@ namespace Faktura.OperationsData
             
         }
 
-        public static void RemoveCustomer(FactureDbContext contextBase, string name,string surname)
+        private static void RemoveCustomer(FactureDbContext contextBase, string name, string surname)
         {
             var customerName = contextBase.Customers.Where(p => p.Name == name).FirstOrDefault();
             var customerSurname = contextBase.Customers.Where(s => s.Surname == surname).FirstOrDefault();
+
+            if (customerName is Customer || customerSurname is Customer)
+            {
+                contextBase.Remove(customerName);
+
+                Console.WriteLine("Dodano kolejnego, Użytkownika");
+            }
+            else
+            {
+                Console.WriteLine("Nie ma takiego rekordu");
+            }
             try
-            { 
-                if(customerName is Customer || customerSurname is Customer)
-                {
-                    contextBase.Remove(customerName);
-                    contextBase.SaveChanges();
-                }
-            }
-            catch(Exception ex)
             {
-                Console.WriteLine("nie ma takiego rekordu.Exception");
+                contextBase.SaveChanges();
             }
-            finally
+            catch (Exception ex)
             {
-                Console.WriteLine("nie ma takiego rekordu");
+                Console.WriteLine("Coś poszło nie tak.Exception");
+            }
+        }
+        
+        private static void RemoveAdress(FactureDbContext contextBase, int adressid)
+        {
+            var adress = contextBase.Adress.Where(e => e.Id== adressid).FirstOrDefault();
+
+            if(adress is AdressesCustomers)
+            {
+                contextBase.Remove(adress);
+            }
+            else
+            {
+                Console.WriteLine("Nie ma takiego rekordu");
+            }
+            try
+            {
+                contextBase.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Coś poszło nie tak.Exception");
             }
         }
 
@@ -89,6 +115,7 @@ namespace Faktura.OperationsData
 
                     if (name is not null)
                     {
+                        
                         RemoveCustomer(contextBase, name, "");
                     }
                     else

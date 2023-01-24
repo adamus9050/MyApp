@@ -11,31 +11,39 @@ namespace Faktura.OperationsData
 {
     class AddData
     {
-        public static void InsertCustomers(FactureDbContext contextBase)
+        public static void PrintMessage(ConsoleColor color,ConsoleColor backgroundColor, string message)
+        {
+            Console.ResetColor();
+            Console.ForegroundColor= color;
+            Console.BackgroundColor= backgroundColor;
+            Console.WriteLine(message);
+        }
+        private static void InsertCustomers(FactureDbContext contextBase)
         {
             bool repeat = true;
 
             while (repeat == true)
             {
-                Console.WriteLine("Podaj imię klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj imię klienta");                
                 string name = Console.ReadLine();
-                Console.WriteLine("Podaj nazwisko klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj nazwisko klienta");
                 string surname = Console.ReadLine();
-                Console.WriteLine("Podaj numer telefonu klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj numer telefonu klienta");
                 string phone = Console.ReadLine();
-                Console.WriteLine("Podaj ulicę klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj ulicę klienta");
                 string street = Console.ReadLine();
-                Console.WriteLine("Podaj numer ulicy klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj numer ulicy klienta");
                 string streetNumb = Console.ReadLine();
-                Console.WriteLine("Podaj kod pocztowy klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj kod pocztowy klienta");
                 string post = Console.ReadLine();
-                Console.WriteLine("Podaj miasto klienta");
+                PrintMessage(ConsoleColor.White, ConsoleColor.Black, "Podaj miasto klienta");
                 string city = Console.ReadLine();
 
                 AdressesCustomers adresses = new AdressesCustomers(street, streetNumb, post, city);
                 Customer cust = new Customer(name, surname, phone);
                 cust.Adressess= adresses;
-
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Chcesz powtórzyć operację? n/y");
                 string yn = Console.ReadLine();
 
@@ -44,20 +52,29 @@ namespace Faktura.OperationsData
                     repeat = true;
                     contextBase.Add(cust);
                     contextBase.Add(adresses); 
-                    contextBase.SaveChanges();
+                    try
+                    {
+                        contextBase.SaveChanges();
+                    }
+                    catch(Exception ex) { Console.WriteLine("Error save Customer. Let's try again!"); }
                     break;
                 }
                 else
                 {
                     contextBase.Add(cust);
                     contextBase.Add(adresses);
-                    contextBase.SaveChanges();
+                    try
+                    {
+                        contextBase.SaveChanges();
+                    }
+                    catch (Exception ex) { Console.WriteLine("Error save Customer. Let's try again!"); }
+
                     break;
                 }
                 
             }
         }
-            public static void InsertMaterials(FactureDbContext contextBase)
+        private static void InsertMaterials(FactureDbContext contextBase)
             {
                 bool repeat = true;
                 while (repeat == true)
@@ -72,22 +89,30 @@ namespace Faktura.OperationsData
 
                     Console.WriteLine("Chcesz dodac kolejną pozycję y/n");
                     string Yn = Console.ReadLine();
-                    if (Yn == "y")
+                if (Yn == "y")
+                {
+                    repeat = true;
+                    contextBase.Add(material);
+                    try
                     {
-                        repeat = true;
-                        contextBase.Add(material);
                         contextBase.SaveChanges();
+                    }
+                    catch (Exception ex) { Console.WriteLine("Error save Materials. Let's try again!"); }
 
-                    }
-                    else
+                }
+                else
+                {
+                    repeat = false;
+                    contextBase.Add(material);
+                    try
                     {
-                        repeat = false;
-                        contextBase.Add(material);
                         contextBase.SaveChanges();
                     }
+                    catch (Exception ex) { Console.WriteLine("Error save Materials. Let's try again!"); }
+                }
                 }
             }
-            public static void InsertKolnierz(FactureDbContext contextBase)
+        private static void InsertKolnierz(FactureDbContext contextBase)
             {
                 bool repeat = true;
                 while (repeat == true)
@@ -104,16 +129,24 @@ namespace Faktura.OperationsData
                     string Yn = Console.ReadLine();
                     if (Yn == "y")
                     {
-                        repeat = true;
-                        contextBase.Add(kolnierz);
-                        contextBase.SaveChanges();
+                            repeat = true;
+                            contextBase.Add(kolnierz);
+                        try
+                        {
+                            contextBase.SaveChanges();
+                        }
+                        catch (Exception ex) { Console.WriteLine("Error save Kolnierz. Let's try again!"); }
 
                     }
                     else
                     {
-                        repeat = false;
-                        contextBase.Add(kolnierz);
-                        contextBase.SaveChanges();
+                            repeat = false;
+                            contextBase.Add(kolnierz);
+                        try
+                        {
+                            contextBase.SaveChanges();
+                        }
+                        catch (Exception ex) { Console.WriteLine("Error save Kolnierz. Let's try again!"); }
                     }
 
                 }
@@ -124,13 +157,13 @@ namespace Faktura.OperationsData
             switch (ch)
             {
                 case 1:
-                    AddData.InsertCustomers(contextBaseInsert);
+                    InsertCustomers(contextBaseInsert);
                     break;
                 case 2:
-                    AddData.InsertMaterials(contextBaseInsert);
+                    InsertMaterials(contextBaseInsert);
                     break;
                 case 3:
-                    AddData.InsertKolnierz(contextBaseInsert);
+                    InsertKolnierz(contextBaseInsert);
                     break;
 
             }
